@@ -6,16 +6,23 @@ on:
       - 'v*'
 
 jobs:
-  release-linux-386:
+  release:
     name: release linux/386
     runs-on: ubuntu-latest
     steps:
     # checkout
     - uses: actions/checkout@master
 
+    - name: get version
+      run: |
+        export VERSION=$(echo $GITHUB_REF | cut -d/ -f3)
+        echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
     # build to ./dist
     - name: compile
       run: sh build-in-docker.sh
+      env:
+        VERSION: ${{ env.VERSION }}
 
     # Copy build-artifacts in the GitHub release
     - name: Copy build-artifacts
@@ -23,4 +30,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
+        releaseId: ${{ env.VERSION }}
         args: "./dist/*"
