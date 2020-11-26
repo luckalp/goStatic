@@ -15,7 +15,7 @@ jobs:
 
     # build to ./dist
     - name: compile
-      run: build-in-docker.sh
+      run: sh build-in-docker.sh
 
     # Copy build-artifacts in the GitHub release
     - name: Copy build-artifacts
