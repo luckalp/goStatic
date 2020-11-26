@@ -27,7 +27,7 @@ jobs:
     - name: compile
       run: sh build-in-docker.sh
       env:
-        VERSION: ${{ github.ref }}
+        VERSION: ${{ env.VERSION }}
 
     - name: Create Release
       id: create_release
@@ -35,8 +35,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: ${{ env.VERSION }}
+        release_name: Release ${{ env.VERSION }}
         # body: |
         #   Changes in this Release
         #   - First Change
@@ -50,5 +50,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        releaseId: ${{ github.ref }}
+        releaseId: ${{ env.VERSION }}
         args: "./dist/*"
